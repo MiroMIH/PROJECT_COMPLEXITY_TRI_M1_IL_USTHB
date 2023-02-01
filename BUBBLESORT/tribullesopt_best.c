@@ -53,17 +53,18 @@ void tribullesopt(int T[], int n)
   int x;
   int change = 1;
   int m=n-1;
-  while (change == 1)
+  printf("avant boucle \n");
+  while (change==1)
   {
     change = 0;
     for (int j = 0; j < m; j++)
     {
+      printf(" j=%d \n",j);
       if (T[j] > T[j + 1])
       {
         x = T[j];
         T[j] = T[j + 1];
         T[j + 1] = x;
-       // printf("\n");
        // printtable(T, n);
         change = 1;
       }
@@ -88,7 +89,7 @@ int main()
   // dynamyic declaration of our tables because of memeory needed for bigger values of n
   for(int k=0; k<40; k++){
   int n = vals[k];
-  printf("n = %d \n",n);
+  printf("n = %d print this with it  \n",n);
   //printf("Donner la taile de tablue : \n");
   int p[n];
 

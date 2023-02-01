@@ -55,9 +55,11 @@ void tribullesopt(int T[], int n)
   int m=n-1;
   while (change == 1)
   {
+    
     change = 0;
     for (int j = 0; j < m; j++)
     {
+      printf("j=%d \n",j);
       if (T[j] > T[j + 1])
       {
         x = T[j];
@@ -108,7 +110,7 @@ int main()
    sprintf(lines[k], "%d,%f,%f,%f,%f,%f \n", n, t[0],t[1],t[2],t[3],t[4]);
   }
   }
-    FILE* fp = fopen("bubbles_sort_opt_results_best.txt", "w");
+    FILE* fp = fopen("bubbles_sort_results_best.txt", "w");
    for(int i=0; i<40; i++){
         fprintf(fp, lines[i]);
     }

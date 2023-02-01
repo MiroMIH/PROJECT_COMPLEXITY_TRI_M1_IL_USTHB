@@ -57,6 +57,7 @@ void tribulles(int T[], int n)
     change = 0;
     for (int j = 0; j < n - 1; j++)
     {
+      
       if (T[j] > T[j + 1])
       {
         x = T[j];

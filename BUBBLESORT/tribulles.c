@@ -106,7 +106,7 @@ int main()
    sprintf(lines[k], "%d,%f,%f,%f,%f,%f \n", n, t[0],t[1],t[2],t[3],t[4]);
   }
   }
-    FILE* fp = fopen("gnometestAAAAAAA.txt", "w");
+    FILE* fp = fopen("bubblesort.txt", "w");
    for(int i=0; i<40; i++){
         fprintf(fp, lines[i]);
     }

@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
-#include <math.h>
 #include <string.h>
+#include <math.h>
+
 void printtable(int T[], int n)
 {
 
@@ -53,16 +54,15 @@ void fillworst(int T[], int n)
 
 int cle(int i, int j){
 
-    int k1 = pow(10, j+1);
-    int k2 = k1/10;
-
-    int t = ((i % k1) - (i % k2))/k2;
-
+    int p1 = pow(10, j+1);
+    int p2 = p1/10;
+    int t = ((i % p1) - (i % p2))/p2;
     return t;
 }
+
 void triAux(int* T, int n, int i){
   // Step 1: Find the maximum digit of the current iteration
-  int max = 0; 
+  int max = 0;
   for(int j = 0; j < n; j++){
     int digit = cle(T[j], i);
     if (digit > max) {
@@ -73,15 +73,24 @@ void triAux(int* T, int n, int i){
   // Step 2: Initialize the count array and set all values to 0
   int count[max + 1];
   memset(count, 0, sizeof count);
+  printf("THE COUNT ARRAY : \n");
+  printtable(count,max+1);
+  printf("\n");
 
   // Step 3: Count the occurrences of each digit
   for(int j = 0; j < n; j++){
     int digit = cle(T[j], i);
     count[digit]++;
   }
+  printf("THE COUNT ARRAY  OCCU : \n");
+  printtable(count,max+1);
+    printf("\n");
 
   // Step 4: Accumulate the count of each digit
   for(int j = 1; j <= max; j++) count[j] += count[j - 1];
+  printf("THE COUNT ARRAY  ACCU : \n");
+  printtable(count,max+1);
+    printf("\n");
 
   // Step 5: Place each element in its correct position in the output array
   int output[n];
@@ -101,11 +110,15 @@ void triAux(int* T, int n, int i){
 
 
 
+
+
 void TriBase(int* T, int n, int k){
     for(int i=0; i<k; i++){
+           printf("\n Iteration %d:\n", i);
         triAux(T, n, i);
-        // printtable(T,n);
-        // printf("\n");
+
+        printtable(T,n);
+
     }
 
 }
@@ -114,45 +127,30 @@ int main()
 {
   // varaibles that are used to calculate the time needed for the execution of the algorithm inbetween t1 and t2
   clock_t t1, t2;
-  float t[5]={0,0,0,0,0};
-  float tbest;
-  float tworse;
-  float tmoyen;
+  float t;
   //different values of n that the algorithm will be tested on.
-      int vals[40] = {2500, 5000, 7500, 10000, 12500, 15000, 17500, 20000, 22500, 25000, 27500, 30000, 32500, 35000,
-       37500, 40000, 42500, 45000, 47500, 50000, 52500, 55000, 57500, 60000, 62500, 65000, 67500, 70000, 72500, 75000
-       , 77500, 80000, 82500, 85000, 87500, 90000, 92500, 95000, 97500, 100000};
-    char lines[40][255];
-  // dynamyic declaration of our tables because of memeory needed for bigger values of n
-  for(int k=0; k<40; k++){
-  int n = vals[k];
+  int n ;
+  printf("Donnez la value de n \n");
+  scanf("%d",&n);
   printf("n = %d \n",n);
   //printf("Donner la taile de tablue : \n");
   int p[n];
 
   // remplire tablue avec des number alletoire entre 0 et 100
-  for(int j=0; j<5;j++)
-  {
+  
   fillrandom(p, n);
-  //printtable(p, n);
+    printtable(p, n);
   //SORT EXECUTION 
   t1 = clock();
-   TriBase(p, n, 6);
+   TriBase(p, n, 5);
   t2 = clock();
-     // execution time calculations
-  t[j] = (float)(t2 - t1) / CLOCKS_PER_SEC;
-  
-  printf("\n time = %.9f \n", t[j]);
-   sprintf(lines[k], "%d,%f,%f,%f,%f,%f \n", n, t[0],t[1],t[2],t[3],t[4]);
-  }
-  }
-    FILE* fp = fopen("TRI_DISTRO_SORT.txt", "w");
-   for(int i=0; i<40; i++){
-        fprintf(fp, lines[i]);
-    }
+  printf("\n");
+      printtable(p, n);
 
-    fclose(fp);
+     // execution time calculations
+  t = (float)(t2 - t1) / CLOCKS_PER_SEC;
   
+  printf("\n time = %.9f \n", t);
 
   return 0;
 }

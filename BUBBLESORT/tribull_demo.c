@@ -6,10 +6,12 @@ void red()
 {
   printf("\033[1;31m");
 }
+
 void yellow()
 {
   printf("\033[1;33m");
 }
+
 void reset()
 {
   printf("\033[0m");
@@ -92,36 +94,32 @@ void fillworst(int T[], int n)
 {
   for (int i = 0; i <= n; i++)
   {
-    T[i] = n - i;
+    T[i] = n-i;
   }
 }
-int iter =1;
-void tribullesopt(int T[], int n)
+int iter=1;
+void tribulles(int T[], int n)
 {
   int x;
   int change = 1;
-  int m = n - 1;
-
   while (change == 1)
   {
     change = 0;
-       printf("Iteration %d:\n", iter);
+    printf("Iteration %d:\n", iter);
 
-    for (int j = 0; j < m; j++)
+    for (int j = 0; j < n - 1; j++)
     {
       if (T[j] > T[j + 1])
       {
         x = T[j];
         T[j] = T[j + 1];
         T[j + 1] = x;
-        // printf("\n");
-        // printtable(T, n);
+       // printf("\n");
+       // printtable(T, n);
         change = 1;
-        // just for printing the demo
         printtable(T, n, j, j+1);
       }
     }
-    m = m - 1;
     iter++;
   }
 }
@@ -152,7 +150,7 @@ printf("\n");
 
 t1 = clock();
 // call the optimized bubble sort function
-tribullesopt(p, n);
+tribulles(p, n);
 
 t2 = clock();
 

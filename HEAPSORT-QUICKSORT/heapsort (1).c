@@ -2,79 +2,96 @@
 #include <time.h>
 #include <stdlib.h>
 #include <math.h>
-void printtable(int T[], int n)
-{
 
-  for (int i = 0; i < n; i++)
-  {
-    // printf("T[%d] = %d \n",i,T[i]);
-    // red();
-    if (i != (n - 1))
-    {
-      printf("[%d]---", T[i]);
-    }
-    else
-    {
-      printf("[%d]", T[i]);
-    }
-  }
-}
-void initwithnull(int T[], int n)
-{
-  for (int i = 0; i < n; i++)
-  {
-    T[i] = 0;
-  }
-}
 void fillrandom(int T[], int n)
 {
   srand(time(0));
-  for (int i = 0; i <= n; i++)
+  for (int i = 0; i < n; i++)
   {
     T[i] = rand() % 1000;
   }
 }
 void fillbest(int T[], int n)
 {
-  for (int i = 0; i <= n; i++)
+  for (int i = 0; i < n; i++)
   {
     T[i] = i;
   }
 }
 void fillworst(int T[], int n)
 {
-  for (int i = 0; i <= n; i++)
+  for (int i = 0; i < n; i++)
   {
     T[i] = n-i;
   }
 }
-void tribullesopt(int T[], int n)
+
+
+void supprimer_min(int T[],int a)
 {
-  int x;
-  int change = 1;
-  int m=n-1;
-  while (change == 1)
-  {
-    change = 0;
-    for (int j = 0; j < m; j++)
+    int x;
+    x = T[a];
+    T[a] = T[0];
+    T[0] = x;
+}
+
+void creer_tas(int T[], int n, int i)
+{
+    int p = i;
+    int gauche = 2 * i + 1; // fils gauche
+    int droite = 2 * i + 2; // fils droit
+    int x;
+
+    if (gauche < n && T[gauche] < T[p])
     {
-      if (T[j] > T[j + 1])
-      {
-        x = T[j];
-        T[j] = T[j + 1];
-        T[j + 1] = x;
-       // printf("\n");
-       // printtable(T, n);
-        change = 1;
-      }
+        p = gauche;
     }
-    m=m-1;
-  }
+
+    if (droite < n && T[droite] < T[p])
+    {
+        p = droite;
+    }
+
+    if (p != i) {
+        x = T[i];
+        T[i] = T[p];
+        T[p] = x;
+
+        creer_tas(T, n, p);
+    }
+}
+
+void tri_tas(int T[], int n)
+{
+    int x;
+    int i;
+    i = (n/2) - 1;
+    while(i>=0)
+    {
+        creer_tas(T, n, i);
+        i--;
+    }
+    i = n-1;
+    while(i>=0)
+    {
+        supprimer_min(T,i);
+        creer_tas(T, i, 0);
+        i--;
+    }
+
+
+    //inverser les élements du tableau
+    for(i=0;i<n/2;i++)
+    {
+        x = T[i];
+        T[i] = T[n-i-1];
+        T[n-i-1] = x;
+    }
 }
 
 int main()
 {
-  // varaibles that are used to calculate the time needed for the execution of the algorithm inbetween t1 and t2
+   // varaibles that are used to calculate the time needed for the execution of the algorithm inbetween t1 and t2
   clock_t t1, t2;
   float t[5]={0,0,0,0,0};
   float tbest;
@@ -88,34 +105,37 @@ int main()
   // dynamyic declaration of our tables because of memeory needed for bigger values of n
   for(int k=0; k<40; k++){
   int n = vals[k];
+  //long n = 32500;
   printf("n = %d \n",n);
   //printf("Donner la taile de tablue : \n");
-  int p[n];
+  //int p[n];
+  int* p = malloc(n * sizeof(int));
 
   // remplire tablue avec des number alletoire entre 0 et 100
   for(int j=0; j<5;j++)
   {
-  fillworst(p, n);
+  fillrandom(p, n);
   //printtable(p, n);
-  //SORT EXECUTION 
+  //SORT EXECUTION
   t1 = clock();
-   tribullesopt(p,n);
+   tri_tas(p,n);
   t2 = clock();
      // execution time calculations
   t[j] = (float)(t2 - t1) / CLOCKS_PER_SEC;
-  
+
   printf("\n time = %.9f \n", t[j]);
    sprintf(lines[k], "%d,%f,%f,%f,%f,%f \n", n, t[0],t[1],t[2],t[3],t[4]);
   }
   }
-    FILE* fp = fopen("bubbles_sort_opt_results_worse.txt", "w");
+    FILE* fp = fopen("tri_par_tas.txt", "w");
    for(int i=0; i<40; i++){
         fprintf(fp, lines[i]);
     }
 
     fclose(fp);
-  
+
 
   return 0;
 }
+
 
